@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "dependencies": {
-    "mongoose": "^4.13.1"
   },
   "scripts": {
     "build": "babel src -d dist",

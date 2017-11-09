@@ -1,18 +1,14 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _mongoose = require('mongoose');
-
-var _mongoose2 = _interopRequireDefault(_mongoose);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MongooseAnalytics = function MongooseAnalytics() {
+var MongooseAnalytics = function MongooseAnalytics(mongooseInstance) {
+  var _this = this;
+
   _classCallCheck(this, MongooseAnalytics);
 
   this.getBasicStats = function () {
@@ -22,11 +18,11 @@ var MongooseAnalytics = function MongooseAnalytics() {
       var promises = [];
       var data = {};
 
-      Object.keys(_mongoose2.default.models).map(function (key) {
+      Object.keys(_this.mongoose.models).map(function (key) {
 
-        var model = _mongoose2.default.models[key];
+        var model = _this.mongoose.models[key];
 
-        promises.push(_mongoose2.default.model(model.modelName).count().then(function (res) {
+        promises.push(_this.mongoose.model(model.modelName).count().then(function (res) {
           data[model.modelName] = {
             count: res
           };
@@ -42,12 +38,14 @@ var MongooseAnalytics = function MongooseAnalytics() {
   };
 
   this.query = function (modelName, options) {
-    return _mongoose2.default.model(modelName).find(options);
+    return _this.mongoose.model(modelName).find(options);
   };
 
   this.count = function (modelName, options) {
-    return _mongoose2.default.model(modelName).count(options);
+    return _this.mongoose.model(modelName).count(options);
   };
+
+  this.mongoose = mongooseInstance;
 };
 
 exports.default = MongooseAnalytics;

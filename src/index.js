@@ -1,6 +1,9 @@
-import mongoose from 'mongoose';
 
 export default class MongooseAnalytics {
+
+  constructor(mongooseInstance) {
+    this.mongoose = mongooseInstance;
+  }
 
   getBasicStats = () => {
 
@@ -11,11 +14,11 @@ export default class MongooseAnalytics {
 
       }
 
-      Object.keys(mongoose.models).map(key => {
+      Object.keys(this.mongoose.models).map(key => {
 
-      const model = mongoose.models[key];
+      const model = this.mongoose.models[key];
 
-        promises.push(mongoose.model(model.modelName).count()
+        promises.push(this.mongoose.model(model.modelName).count()
         .then(res => {
           data[model.modelName] = {
             count: res
@@ -37,11 +40,11 @@ export default class MongooseAnalytics {
 
 
   query = (modelName, options) => {
-    return mongoose.model(modelName).find(options);
+    return this.mongoose.model(modelName).find(options);
   }
 
   count = (modelName, options) => {
-    return mongoose.model(modelName).count(options);
+    return this.mongoose.model(modelName).count(options);
   }
 
 }
